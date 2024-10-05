@@ -22,13 +22,13 @@ public abstract class ZachLibrary extends JavaPlugin {
 	}
 
 	protected boolean preEnable(Plugin plugin) {
-		LogUtils.debug("ZachLibrary v" + version + " is being enabled!");
+		//LogUtils.debug("ZachLibrary v" + version + " is being enabled!");
 		this.adventure = BukkitAudiences.create(this);
 		return true;
 	}
 
 	protected boolean preDisable(Plugin plugin) {
-		LogUtils.debug("ZachLibrary v" + version + " is being disabled!");
+		//LogUtils.debug("ZachLibrary v" + version + " is being disabled!");
 		if(this.adventure != null) {
 			this.adventure.close();
 			this.adventure = null;
