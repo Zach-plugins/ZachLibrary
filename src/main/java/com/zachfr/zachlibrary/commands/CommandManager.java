@@ -74,6 +74,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         if(cmd != null){
             if(args.length > 0){
                 for(SubCommand subCommand : cmd.getSubCommands()){
+                    if(!sender.hasPermission(subCommand.getPermission()))
+                        continue;
                     if(subCommand.getName().toLowerCase().startsWith(args[0].toLowerCase()) || Arrays.asList(subCommand.getAliases()).contains(args[0].toLowerCase())){
                         tabComplete.add(subCommand.getName());
 
