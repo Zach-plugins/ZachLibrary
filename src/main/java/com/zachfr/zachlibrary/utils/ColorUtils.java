@@ -1,5 +1,7 @@
 package com.zachfr.zachlibrary.utils;
 
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -46,6 +48,36 @@ public class ColorUtils {
 		for (String string : message)
 			lore.add(color(string));
 		return lore;
+	}
+
+	public static BaseComponent[] parseHexColorsBaseComponents(String message) {
+		List<BaseComponent> baseComponentList = new ArrayList<>();
+		int index = 0;
+		message = gradient(message);
+		final Matcher matcher = regex.matcher(message);
+		final Pattern p = Pattern.compile("[^&#]+");
+		while (matcher.find()) {
+			final String color = matcher.group();
+			final String hexcolor = "#" + (matcher.group(1) == null ? matcher.group(2) : matcher.group(1));
+
+			net.md_5.bungee.api.ChatColor c = null;
+			try {
+				c = net.md_5.bungee.api.ChatColor.of(hexcolor);
+			} catch (final Exception ignored) {
+			}
+			if (c != null) {
+				message = message.replaceFirst("[{-}]", "").replaceFirst(color.replaceFirst("[{-}]", ""), "");
+				String s = message.split("&#")[0];
+				baseComponentList.add(new ComponentBuilder(s).color(c).getCurrentComponent());
+				message = message.replaceFirst("[^&#]+", "");
+			}
+			index++;
+		}
+		return baseComponentList.toArray(new BaseComponent[baseComponentList.size()]);
+	}
+
+	public static boolean containsHexColor(String message){
+		return regex.matcher(message).find();
 	}
 
 	public static String gradient(String message) {
