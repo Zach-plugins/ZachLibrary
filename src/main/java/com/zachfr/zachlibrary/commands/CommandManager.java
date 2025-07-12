@@ -1,5 +1,8 @@
 package com.zachfr.zachlibrary.commands;
 
+import com.zachfr.zachlibrary.ZachLibrary;
+import com.zachfr.zachlibrary.language.Language;
+import com.zachfr.zachlibrary.language.Message;
 import com.zachfr.zachlibrary.utils.ColorUtils;
 import com.zachfr.zachlibrary.utils.LogUtils;
 import org.bukkit.command.*;
@@ -17,9 +20,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     private final HashMap<String, com.zachfr.zachlibrary.commands.Command> commands = new HashMap<>();
 
     private final JavaPlugin plugin;
+    
+    private final Message noPermission;
 
     public CommandManager(JavaPlugin plugin) {
         this.plugin = plugin;
+        noPermission = ZachLibrary.getInstance().getLanguage().getMessage("command.no-permission");
     }
 
     public CommandManager addCommand(com.zachfr.zachlibrary.commands.Command command) {
@@ -43,7 +49,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                         if(sender instanceof Player){
                             Player player = (Player) sender;
                             if (subCommand.getPermission() != null && !player.hasPermission(subCommand.getPermission())) {
-                                player.sendMessage(ColorUtils.color("&cYou do not have permission to use this command!"));
+                                noPermission.sendPrefixedMessage(player);
+                                //player.sendMessage(ColorUtils.color("&cYou do not have permission to use this command!"));
                                 return true;
                             }
                         }
@@ -56,7 +63,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             if(sender instanceof Player){
                 Player player = (Player) sender;
                 if (cmd.getPermission() != null && !player.hasPermission(cmd.getPermission())) {
-                    player.sendMessage(ColorUtils.color("&cYou do not have permission to use this command!"));
+                    noPermission.sendPrefixedMessage(player);
+                    //player.sendMessage(ColorUtils.color("&cYou do not have permission to use this command!"));
                     return true;
                 }
             }
