@@ -20,7 +20,22 @@ public class TextUtils {
             else
                 return color ? ColorUtils.color(message) : message;
         }
-
+        
+        int toCompensate = getCenterPx(message, length, color, onlyCompensate);
+        int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
+        int compensated = 0;
+        StringBuilder sb = new StringBuilder();
+        while(compensated < toCompensate){
+            sb.append(" ");
+            compensated += spaceLength;
+        }
+        if(onlyCompensate)
+            return sb.toString();
+        else
+            return  sb + message;
+    }
+    
+    public static int getCenterPx(String message, int length, Boolean color, Boolean onlyCompensate){
         message = (color ? ColorUtils.color(message.replaceAll("<center>|</center>", "")) : message.replaceAll("<center>|</center>", ""));
         message = (color ? ColorUtils.color(message.replaceAll("&#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|\\{#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})}.*?", "")) : message.replaceAll("&#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|\\{#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})}.*?", ""));
 
@@ -47,16 +62,6 @@ public class TextUtils {
 
         int halvedMessageSize = messagePxSize / 2;
         int toCompensate = CENTER_PX - halvedMessageSize;
-        int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
-        int compensated = 0;
-        StringBuilder sb = new StringBuilder();
-        while(compensated < toCompensate){
-            sb.append(" ");
-            compensated += spaceLength;
-        }
-        if(onlyCompensate)
-            return sb.toString();
-        else
-            return  sb + message;
+        return toCompensate;
     }
 }
