@@ -98,4 +98,12 @@ public class ColorUtils {
 		}
 		return message;
 	}
+
+	public static String getRawString(String message){
+		if(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_16)){
+			return net.md_5.bungee.api.ChatColor.stripColor(ColorUtils.color(message));
+		}else{
+			return message;
+		}
+	}
 }
